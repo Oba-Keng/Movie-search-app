@@ -1,11 +1,11 @@
 import React from "react";
 import "./App.css";
-import MovieList from "./components/regions/movies/index.js";
+import OmdbClient from "./omdb";
 
 function App() {
   return (
     <div>
-      <MovieList />
+      <OmdbClient />
     </div>
   );
 }

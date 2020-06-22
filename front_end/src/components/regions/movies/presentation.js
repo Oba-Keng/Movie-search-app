@@ -1,33 +1,46 @@
 import React, { Component } from "react";
+import axios from "axios";
 
 class Movie extends Component {
-  constructor(props) {
-    super(props);
+  constructor() {
+    super();
+
     this.state = {
-      items: [],
-      isLoaded: false
+      keyword: "",
+      movies: []
     };
   }
 
-  componentDidMount() {
-    fetch("http://www.omdbapi.com/?i=tt3896198&apikey=539d07a9")
-      .then(res => res.json())
-      .then(json => {
-        this.setState({
-          items: json,
-          isLoaded: true
-        });
-      });
-  }
+  keywordChanged = e => this.setState({ keyword: e.target.value });
+
+  searchMovie = () =>
+    fetch(
+      `http://www.omdbapi.com/?apikey=539d07a9&s=${this.state.keyword}`
+    ).then(response => response.json().then(this.renderMovies));
+
+  renderMovies = response => this.setState({ movies: response.Search });
 
   render() {
-    let { isLoaded, items } = this.state;
+    return (
+      <React.Fragment>
+        <div>
+          <input
+            value={this.state.keyword}
+            onChange={this.keywordChanged}
+            placeholder="keyword"
+          />
 
-    if (!isLoaded) {
-      return <div>Fetching data...</div>;
-    } else {
-      return <div>Data Fetched</div>;
-    }
+          <button onClick={this.searchMovie}>Search</button>
+        </div>
+        <div>
+          <ul>
+            {this.state.movies.map((movie, id) => (
+              <li key={id}>{movie.Title}</li>
+            ))}
+          </ul>
+        </div>
+      </React.Fragment>
+    );
   }
 }
 
