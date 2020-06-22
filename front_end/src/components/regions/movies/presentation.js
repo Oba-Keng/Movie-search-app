@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from "reactstrap";
 import { InputGroup, InputGroupAddon, InputGroupText, Input } from "reactstrap";
 import { Form, FormGroup, Label, FormText } from "reactstrap";
-
+import axios from "axios";
 class Movie extends Component {
   constructor() {
     super();
@@ -10,7 +10,11 @@ class Movie extends Component {
     this.state = {
       keyword: "",
       movies: [],
-      newMovieModal: false
+      movie: [],
+      newMovieModal: false,
+      addedMovies: {
+        title: ""
+      }
     };
   }
 
@@ -25,11 +29,30 @@ class Movie extends Component {
 
   toggleNewMovieModal() {
     this.setState({
-      newMovieModal: true
+      newMovieModal: !this.state.newMovieModal
     });
   }
 
+  // componentWillMount() {
+
+  // }
+
+  addMovies = () => {
+    axios.post("http://localhost:3000/", this.addedMovies).then(response => {
+      let { movies } = this.state;
+
+      movies.push(response.data);
+    });
+  };
+
   render() {
+    let movies = this.state.movies.map(movie => {
+      return (
+        <tr>
+          <td>{movie.title}</td>
+        </tr>
+      );
+    });
     return (
       <React.Fragment>
         <div>
@@ -60,21 +83,33 @@ class Movie extends Component {
             <ModalHeader toggle={this.toggleNewMovieModal.bind(this)}>
               Add new movie{" "}
             </ModalHeader>
+            <br></br>
             <ModalBody>
-              <InputGroup>
-                <Label for="title">Title</Label>
-                <Input id="title" placeholder="with a placeholder" />
-              </InputGroup>
+              <FormGroup>
+                <Label for="title">Title </Label>
+                <Input
+                  value={this.state.addedMovies.title}
+                  onChange={e => {
+                    let { addedMovies } = this.state;
+                    addedMovies.title = e.target.value;
+
+                    this.setState({
+                      addedMovies
+                    });
+                  }}
+                  id="title"
+                  placeholder="placeholder"
+                />
+              </FormGroup>
             </ModalBody>
+            <br></br>
+
             <ModalFooter>
-              <Button
-                color="primary"
-                onClick={this.toggleNewMovieModal.bind(this)}
-              >
-                Do Something
+              <Button color="danger" onClick={this.addMovies.bind(this)}>
+                Enter{" "}
               </Button>{" "}
               <Button
-                color="secondary"
+                color="danger"
                 onClick={this.toggleNewMovieModal.bind(this)}
               >
                 Cancel
