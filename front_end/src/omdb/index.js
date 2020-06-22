@@ -9,6 +9,8 @@ class OmdbClient extends Component {
   render() {
     return (
       <div>
+        <p>GoodDay,please enter movie you would like to search for below...</p>
+
         <Movie />
       </div>
     );
