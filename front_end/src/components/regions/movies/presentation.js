@@ -38,11 +38,15 @@ class Movie extends Component {
   // }
 
   addMovies = () => {
-    axios.post("http://localhost:3000/", this.addedMovies).then(response => {
-      let { movies } = this.state;
+    axios
+      .post("http://localhost:3000/movies", this.addedMovies)
+      .then(response => {
+        let { movies } = this.state;
 
-      movies.push(response.data);
-    });
+        movies.push(response.data);
+
+        this.setState({ movies });
+      });
   };
 
   render() {
@@ -72,6 +76,8 @@ class Movie extends Component {
           </ul>
         </div>
         <div>
+          <br></br>
+          <p>Press button below to add new movies to your list!</p>
           <Button color="primary" onClick={this.toggleNewMovieModal.bind(this)}>
             Add Movie
           </Button>
