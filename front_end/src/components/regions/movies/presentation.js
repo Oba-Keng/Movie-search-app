@@ -39,7 +39,7 @@ class Movie extends Component {
 
   addMovies = () => {
     axios
-      .post("http://localhost:3000/movies", this.addedMovies)
+      .get(`http://localhost:3000/movies`, this.addedMovies)
       .then(response => {
         let { movies } = this.state;
 
