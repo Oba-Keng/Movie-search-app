@@ -3,5 +3,3 @@
 ### use npm install axios --save
 
 ## Movie info requested from OMDB movie api web site
-
-
